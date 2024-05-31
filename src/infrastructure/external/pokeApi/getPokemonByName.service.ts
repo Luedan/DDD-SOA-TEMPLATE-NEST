@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HttpAdapter } from '../httpAdapter/httpAdapter.service';
+import { HttpAdapter } from '../adapters/httpAdapter.service';
 
 @Injectable()
 export class GetPokemonByName {

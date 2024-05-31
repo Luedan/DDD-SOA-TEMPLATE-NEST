@@ -189,8 +189,4 @@ describe('TodoRepository', () => {
       new HttpException('Error de DB: Error', 500),
     );
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 });

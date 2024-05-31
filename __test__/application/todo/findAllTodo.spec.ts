@@ -36,8 +36,4 @@ describe('Find All Todo', () => {
     // Assert
     expect(result).toEqual(TodoResponseMockArray);
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 });

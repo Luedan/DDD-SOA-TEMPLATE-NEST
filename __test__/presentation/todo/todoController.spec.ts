@@ -91,8 +91,4 @@ describe('TodoController', () => {
     // Assert
     expect(result).toEqual(TodoResponseMock);
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 });

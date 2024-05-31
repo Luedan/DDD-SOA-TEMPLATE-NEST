@@ -36,8 +36,4 @@ describe('Delete Todo', () => {
     // Assert
     expect(result).toEqual(TodoResponseMock);
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 });

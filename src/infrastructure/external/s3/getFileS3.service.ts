@@ -3,9 +3,9 @@ import { GetFileS3Interface } from '@app/domain/interfaces/infrastructure/extern
 import { GetFileRequestDto } from '@app/domain/s3/dto/getFile-request.dto';
 import { GetFileResponseDto } from '@app/domain/s3/dto/getFile-response.dto';
 import { S3ParameterRepository } from '@app/infrastructure/persistence/repositories/parameters/s3/s3Parameter.repository';
-import { S3 } from '@aws-sdk/client-s3';
 import { FilesHelper } from '../../../common/classes/utils/filesHelper';
 import { Readable } from 'stream';
+import { S3Adapter } from '../adapters/s3Adapter.service';
 
 /**
  * Service class for getting a file from Amazon S3.
@@ -16,10 +16,12 @@ export class GetFileS3 implements GetFileS3Interface {
    * Constructs a new instance of the `GetFileS3` class.
    * @param _s3ParameterRepository - The repository for accessing S3 parameters.
    * @param _fileHelper - The helper class for file operations.
+   * @param _s3Client - The S3 client adapter.
    */
   constructor(
     private readonly _s3ParameterRepository: S3ParameterRepository,
     private readonly _fileHelper: FilesHelper,
+    private readonly _s3Client: S3Adapter,
   ) {}
 
   /**
@@ -42,12 +44,10 @@ export class GetFileS3 implements GetFileS3Interface {
 
       const parameter = parameters[0];
 
-      const s3Client = new S3({
+      const s3Client = this._s3Client.s3Client({
         region: parameter.region,
-        credentials: {
-          accessKeyId: parameter.accessKeyId,
-          secretAccessKey: parameter.secretAccessKey,
-        },
+        accessKeyId: parameter.accessKeyId,
+        secretAccessKey: parameter.secretAccessKey,
       });
 
       const s3Response = await s3Client.getObject({

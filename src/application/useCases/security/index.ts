@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { GetTokenData } from './getTokenData.service';
 import { Login } from './login.service';
 import { RefreshToken } from './refreshToken.service';

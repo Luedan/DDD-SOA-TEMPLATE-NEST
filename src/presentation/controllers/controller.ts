@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { DefaultController } from './default/default.controller';
 import { HealthController } from './health/health.controller';
 import { EmailParameterController } from './parameters/email/emailParameter.controller';

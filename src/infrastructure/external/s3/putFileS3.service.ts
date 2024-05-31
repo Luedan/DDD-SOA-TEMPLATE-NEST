@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { S3 } from '@aws-sdk/client-s3';
 import { PutFileRequestDto } from '@app/domain/s3/dto/putFile-request.dto';
 import { S3ParameterRepository } from '@app/infrastructure/persistence/repositories/parameters/s3/s3Parameter.repository';
 import { PutFileResponseDto } from '@app/domain/s3/dto/putFile-response.dto';
 import { PutFileS3Interface } from '@app/domain/interfaces/infrastructure/external/s3/putFileS3.interface';
+import { S3Adapter } from '../adapters/s3Adapter.service';
 
 /**
  * Service class for putting a file in S3.
@@ -13,8 +13,12 @@ export class PutFileS3 implements PutFileS3Interface {
   /**
    * Constructs a new instance of the `PutFileS3` class.
    * @param s3ParameterRepository - The repository for accessing S3 parameters.
+   * @param s3Client - The S3 client adapter.
    */
-  constructor(private readonly s3ParameterRepository: S3ParameterRepository) {}
+  constructor(
+    private readonly s3ParameterRepository: S3ParameterRepository,
+    private readonly s3Client: S3Adapter,
+  ) {}
 
   /**
    * Executes the operation to put a file in S3.
@@ -35,12 +39,10 @@ export class PutFileS3 implements PutFileS3Interface {
 
       const parameter = parameters[0];
 
-      const s3Client = new S3({
+      const s3Client = this.s3Client.s3Client({
+        accessKeyId: parameter.accessKeyId,
+        secretAccessKey: parameter.secretAccessKey,
         region: parameter.region,
-        credentials: {
-          accessKeyId: parameter.accessKeyId,
-          secretAccessKey: parameter.secretAccessKey,
-        },
       });
 
       const s3Response = await s3Client.putObject({

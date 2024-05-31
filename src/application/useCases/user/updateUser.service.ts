@@ -7,6 +7,7 @@ import { User } from '@app/domain/user/user.entity';
 import { UserResponseDto } from '@app/domain/user/dto/user-response.dto';
 import { FindOneUser } from './findOneUser.service';
 import { UpdateUserInterface } from '@app/domain/interfaces/application/user/updateUser.interface';
+import * as bcrypt from 'bcrypt';
 
 /**
  * Service class for updating a user.
@@ -48,6 +49,13 @@ export class UpdateUser implements UpdateUserInterface {
       UserUpdateDto,
       User,
     );
+
+    if (userUpdatePayload?.password) {
+      userUpdatePayload.password = bcrypt.hashSync(
+        userUpdatePayload.password,
+        10,
+      );
+    }
 
     const user = await this._userRepository.update(id, userUpdatePayload);
 

@@ -59,8 +59,4 @@ describe('Update Todo', () => {
       NotFoundException,
     );
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 });

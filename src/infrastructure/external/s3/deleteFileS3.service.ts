@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { S3 } from '@aws-sdk/client-s3';
 import { DeleteFileS3Interface } from '@app/domain/interfaces/infrastructure/external/s3/deleteFileS3.interface';
 import { DeleteFileResponseDto } from '@app/domain/s3/dto/deleteFile-response.dto';
 import { S3ParameterRepository } from '@app/infrastructure/persistence/repositories/parameters/s3/s3Parameter.repository';
+import { S3Adapter } from '../adapters/s3Adapter.service';
 
 /**
  * Service class for deleting a file from Amazon S3.
@@ -13,7 +13,10 @@ export class DeleteFileS3 implements DeleteFileS3Interface {
    * Represents the DeleteFileS3Service class.
    * This class is responsible for deleting files from S3.
    */
-  constructor(private readonly _s3ParameterRepository: S3ParameterRepository) {}
+  constructor(
+    private readonly _s3ParameterRepository: S3ParameterRepository,
+    private readonly _s3Client: S3Adapter,
+  ) {}
 
   /**
    * Deletes a file from S3.
@@ -32,12 +35,10 @@ export class DeleteFileS3 implements DeleteFileS3Interface {
 
       const parameter = parameters[0];
 
-      const s3Client = new S3({
+      const s3Client = this._s3Client.s3Client({
         region: parameter.region,
-        credentials: {
-          accessKeyId: parameter.accessKeyId,
-          secretAccessKey: parameter.secretAccessKey,
-        },
+        accessKeyId: parameter.accessKeyId,
+        secretAccessKey: parameter.secretAccessKey,
       });
 
       await s3Client.deleteObject({

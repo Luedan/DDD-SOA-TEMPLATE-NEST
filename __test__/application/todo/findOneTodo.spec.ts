@@ -36,8 +36,4 @@ describe('Find One Todo', () => {
     // Assert
     expect(result).toEqual(TodoResponseMock);
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 });

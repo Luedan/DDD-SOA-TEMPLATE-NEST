@@ -1,6 +1,6 @@
 import { It, Mock } from 'moq.ts';
 import { GetPokemonByName } from '../../../../src/infrastructure/external/pokeApi/getPokemonByName.service';
-import { HttpAdapter } from '../../../../src/infrastructure/external/httpAdapter/httpAdapter.service';
+import { HttpAdapter } from '../../../../src/infrastructure/external/adapters/httpAdapter.service';
 
 const PokeMock = {
   id: 1,
